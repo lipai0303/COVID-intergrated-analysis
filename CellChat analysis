@@ -1,0 +1,105 @@
+######Cellchat analysis(example with heart)
+library(Seurat)
+library(SeuratData)
+library(tidyverse)
+library(CellChat)
+library(NMF)
+library(ggalluvial)
+library(patchwork)
+library(ggplot2)
+library(svglite)
+heart2 <- readRDS("heart.rds")
+Idents(heart2)<-"disease"
+
+DefaultAssay(heart2)<-"RNA"
+
+heart.cov <- subset(heart2, idents = 'COVID')
+heart.covkid <- subset(heart2, idents = 'COVID+Kidney failure')
+
+
+heart.cov <- createCellChat(heart.cov@assays$RNA@data, meta = heart.cov@meta.data, group.by = "predicted_celltype")
+heart.covkid <- createCellChat(heart.covkid@assays$RNA@data, meta = heart.covkid@meta.data, group.by = "predicted_celltype")
+
+
+cellchat <- heart.cov
+cellchat@DB <- CellChatDB.human
+cellchat <- subsetData(cellchat)
+cellchat <- identifyOverExpressedGenes(cellchat)
+cellchat <- identifyOverExpressedInteractions(cellchat)
+#cellchat <- projectData(cellchat, PPI.human)
+cellchat <- computeCommunProb(cellchat, raw.use = TRUE, population.size = TRUE)
+#cellchat <- filterCommunication(cellchat, min.cells = 5)
+cellchat <- computeCommunProbPathway(cellchat)
+cellchat <- aggregateNet(cellchat)
+cellchat <- netAnalysis_computeCentrality(cellchat, slot.name = "netP")
+#cellchat <- computeNetSimilarity(cellchat, type = "functional")
+#cellchat <- netEmbedding(cellchat, type = "functional")
+#cellchat <- netClustering(cellchat, type = "functional")
+#cellchat <- computeNetSimilarity(cellchat, type = "structural")
+#cellchat <- netEmbedding(cellchat, type = "structural")
+#cellchat <- netClustering(cellchat, type = "structural")
+heart.cov <- cellchat
+saveRDS(heart.cov, "heart.cov.rds")
+
+
+cellchat <- heart.covkid
+cellchat@DB <- CellChatDB.human
+cellchat <- subsetData(cellchat)
+cellchat <- identifyOverExpressedGenes(cellchat)
+cellchat <- identifyOverExpressedInteractions(cellchat)
+#cellchat <- projectData(cellchat, PPI.human)
+cellchat <- computeCommunProb(cellchat, raw.use = TRUE, population.size = TRUE)
+#cellchat <- filterCommunication(cellchat, min.cells = 5)
+cellchat <- computeCommunProbPathway(cellchat)
+cellchat <- aggregateNet(cellchat)
+cellchat <- netAnalysis_computeCentrality(cellchat, slot.name = "netP")
+#cellchat <- computeNetSimilarity(cellchat, type = "functional")
+#cellchat <- netEmbedding(cellchat, type = "functional")
+#cellchat <- netClustering(cellchat, type = "functional")
+#cellchat <- computeNetSimilarity(cellchat, type = "structural")
+#cellchat <- netEmbedding(cellchat, type = "structural")
+#cellchat <- netClustering(cellchat, type = "structural")
+heart.covkid <- cellchat
+saveRDS(heart.covkid, "heart.covkid.rds")
+
+
+heart.list <- list(COVID=heart.cov, COVID.Kidney=heart.covkid)
+cellchatheart <- mergeCellChat(heart.list, add.names = names(heart.list), cell.prefix = TRUE)
+gg1 <- compareInteractions(cellchatheart, show.legend = F, group = c(1,2), measure = "count")
+gg2 <- compareInteractions(cellchatheart, show.legend = F, group = c(1,2), measure = "weight")
+p <- gg1 + gg2
+
+ggsave("Overview_number_strength-heart.pdf", p, width = 3, height = 3)
+
+table(heart2@meta.data$manual_annotation_cluster, heart2@meta.data$disease)
+
+
+cellchat<-subsetCellChat(object=cellchat, idents.use=c('B+Plasma','Ciliated','Endothelial', 'Epithelial','Fibroblasts','MAST','Myeloid','RBC', 'Secretory','T+NK','Vascular Contractile'))
+
+
+par(mfrow = c(1,2))
+pdf("Heart-3.pdf", width=4, height=4)
+netVisual_heatmap(cellchatheart)
+dev.off()
+
+pdf("Heart-4.pdf", width=4, height=4)
+netVisual_heatmap(cellchatheart, measure = "weight")
+dev.off()
+
+gg1 <- rankNet(cellchatheart, mode = "comparison", stacked = T, do.stat = TRUE)
+gg2 <- rankNet(cellchatheart, mode = "comparison", stacked = F, do.stat = TRUE)
+p <- gg1 + gg2
+ggsave("Compare_pathway_strengh-heart.pdf", p, width = 8, height = 6)
+
+library(ComplexHeatmap)
+
+pathway.union <- union(heart.list[[1]]@netP$pathways, heart.list[[2]]@netP$pathways)
+
+
+pdf("ht1heart.pdf", width=5, height=8)
+netAnalysis_signalingRole_heatmap(heart.list[[1]], pattern = "all", signaling = pathway.union, title = names(heart.list)[1], width = 8, height = 12)
+dev.off()
+
+pdf("ht2heart.pdf", width=5, height=8)
+netAnalysis_signalingRole_heatmap(heart.list[[2]], pattern = "all", signaling = pathway.union, title = names(heart.list)[2], width = 8, height = 12)
+dev.off()
