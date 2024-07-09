@@ -1,0 +1,196 @@
+###########D4(1),D11(2),D15(3),COVID+Kidney failure####D5(4),D7(5),D14(6),COVID#####################
+
+
+#####################Liver####################
+
+####D4####
+library(Seurat)
+D4liver.data=Read10X_h5("02-P240970-S016-R01_raw_feature_bc_matrix.h5")
+
+D4liver <- CreateSeuratObject(counts = D4liver.data, min.cells = 10, , min.features = 200, project = "D4")
+V8_CD4barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD4barcodes_vector <- as.character(V8_CD4barcodes)
+subset_D4liver <- subset(D4liver, cells = V8_CD4barcodes_vector)
+
+
+D4liverASSAY <- CreateAssayObject(counts = D4liver.data, min.cells = 10, min.features = 200,project = "D4")
+subset_D4liver_asssay <- subset(D4liverASSAY, cells = V8_CD4barcodes_vector)
+
+gene_names <- rownames(subset_D4liver_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D4liver_asssay@counts) <- gene_names
+rownames(subset_D4liver_asssay@data) <- gene_names
+subset_D4liver[['RNA']] <- subset_D4liver_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D4liver)
+subset_D4liver@meta.data <- metadata
+
+subset_D4liver@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D4liver@meta.data[["patient"]] <- "Patient 1"
+
+
+
+
+#####D5
+
+D5liver.data=Read10X_h5("02-P248880-S041-R01_raw_feature_bc_matrix.h5")
+
+D5liver <- CreateSeuratObject(counts = D5liver.data, min.cells = 10, , min.features = 200, project = "D5")
+V8_CD5barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD5barcodes_vector <- as.character(V8_CD5barcodes)
+subset_D5liver <- subset(D5liver, cells = V8_CD5barcodes_vector)
+
+
+D5liverASSAY <- CreateAssayObject(counts = D5liver.data, min.cells = 10, min.features = 200,project = "D5")
+subset_D5liver_asssay <- subset(D5liverASSAY, cells = V8_CD5barcodes_vector)
+
+gene_names <- rownames(subset_D5liver_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D5liver_asssay@counts) <- gene_names
+rownames(subset_D5liver_asssay@data) <- gene_names
+subset_D5liver[['RNA']] <- subset_D5liver_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D5liver)
+subset_D5liver@meta.data <- metadata
+
+subset_D5liver@meta.data[["disease"]] <- "COVID"
+subset_D5liver@meta.data[["patient"]] <- "Patient 4"
+
+
+
+
+
+
+
+#####D11
+
+D11liver.data=Read10X_h5("04-P079042-S079-R01_raw_feature_bc_matrix.h5")
+
+D11liver <- CreateSeuratObject(counts = D11liver.data, min.cells = 10, , min.features = 200, project = "D11")
+V8_CD11barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD11barcodes_vector <- as.character(V8_CD11barcodes)
+subset_D11liver <- subset(D11liver, cells = V8_CD11barcodes_vector)
+
+
+D11liverASSAY <- CreateAssayObject(counts = D11liver.data, min.cells = 10, min.features = 200,project = "D11")
+subset_D11liver_asssay <- subset(D11liverASSAY, cells = V8_CD11barcodes_vector)
+
+gene_names <- rownames(subset_D11liver_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D11liver_asssay@counts) <- gene_names
+rownames(subset_D11liver_asssay@data) <- gene_names
+subset_D11liver[['RNA']] <- subset_D11liver_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D11liver)
+subset_D11liver@meta.data <- metadata
+
+subset_D11liver@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D11liver@meta.data[["patient"]] <- "Patient 2"
+
+
+####D14
+
+D14liver.data=Read10X_h5("12-P485759-S020-R01_raw_feature_bc_matrix.h5")
+
+D14liver <- CreateSeuratObject(counts = D14liver.data, min.cells = 10, , min.features = 200, project = "D14")
+V8_CD14barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD14barcodes_vector <- as.character(V8_CD14barcodes)
+subset_D14liver <- subset(D14liver, cells = V8_CD14barcodes_vector)
+
+
+D14liverASSAY <- CreateAssayObject(counts = D14liver.data, min.cells = 10, min.features = 200,project = "D14")
+subset_D14liver_asssay <- subset(D14liverASSAY, cells = V8_CD14barcodes_vector)
+
+gene_names <- rownames(subset_D14liver_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D14liver_asssay@counts) <- gene_names
+rownames(subset_D14liver_asssay@data) <- gene_names
+subset_D14liver[['RNA']] <- subset_D14liver_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D14liver)
+subset_D14liver@meta.data <- metadata
+
+subset_D14liver@meta.data[["disease"]] <- "COVID"
+subset_D14liver@meta.data[["patient"]] <- "Patient 6"
+
+
+#########D15
+
+D15liver.data=Read10X_h5("12-P617758-S003-R01_raw_feature_bc_matrix.h5")
+
+D15liver <- CreateSeuratObject(counts = D15liver.data, min.cells = 10, , min.features = 200, project = "D15")
+V8_CD15barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD15barcodes_vector <- as.character(V8_CD15barcodes)
+subset_D15liver <- subset(D15liver, cells = V8_CD15barcodes_vector)
+
+
+D15liverASSAY <- CreateAssayObject(counts = D15liver.data, min.cells = 10, min.features = 200,project = "D15")
+subset_D15liver_asssay <- subset(D15liverASSAY, cells = V8_CD15barcodes_vector)
+
+gene_names <- rownames(subset_D15liver_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D15liver_asssay@counts) <- gene_names
+rownames(subset_D15liver_asssay@data) <- gene_names
+subset_D15liver[['RNA']] <- subset_D15liver_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D15liver)
+subset_D15liver@meta.data <- metadata
+
+subset_D15liver@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D15liver@meta.data[["patient"]] <- "Patient 3"
+
+####D7
+
+D7liver.data=Read10X_h5("02-P348762-S041-R01_raw_feature_bc_matrix.h5")
+
+D7liver <- CreateSeuratObject(counts = D7liver.data, min.cells = 10, , min.features = 200, project = "D7")
+V8_CD7barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD7barcodes_vector <- as.character(V8_CD7barcodes)
+subset_D7liver <- subset(D7liver, cells = V8_CD7barcodes_vector)
+
+
+D7liverASSAY <- CreateAssayObject(counts = D7liver.data, min.cells = 10, min.features = 200,project = "D7")
+subset_D7liver_asssay <- subset(D7liverASSAY, cells = V8_CD7barcodes_vector)
+
+gene_names <- rownames(subset_D7liver_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D7liver_asssay@counts) <- gene_names
+rownames(subset_D7liver_asssay@data) <- gene_names
+subset_D7liver[['RNA']] <- subset_D7liver_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D7liver)
+subset_D7liver@meta.data <- metadata
+
+subset_D7liver@meta.data[["disease"]] <- "COVID"
+subset_D7liver@meta.data[["patient"]] <- "Patient 5"
+
+
+liver.list <- list(subset_D15liver,subset_D11liver,subset_D14liver,subset_D5liver,subset_D4liver,subset_D7liver)
+liver.list <- lapply(X = liver.list, FUN = SCTransform)
+features <- SelectIntegrationFeatures(object.list = liver.list, nfeatures = 2000)
+liver.list <- PrepSCTIntegration(object.list = liver.list, anchor.features = features)
+liver.anchors <- FindIntegrationAnchors(object.list = liver.list, normalization.method = "SCT", 
+                                          anchor.features = features)
+liver2 <- IntegrateData(anchorset = liver.anchors, normalization.method = "SCT")
+DefaultAssay(liver2) <- "integrated"
+
+# Standard pre-processing workflow
+liver2 <- ScaleData(liver2, features = all.genes)
+liver2 <- RunPCA(liver2, features = VariableFeatures(object = liver2))
+ElbowPlot(liver2)
+liver2 <- FindNeighbors(liver2, dims = 1:17)
+liver2 <- FindClusters(liver2, resolution = 0.5)
+liver2 <- RunUMAP(liver2, dims = 1:17)
+DimPlot(liver2, reduction = "umap")
