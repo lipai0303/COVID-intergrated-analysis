@@ -1,0 +1,150 @@
+#################WGCNA FOR ALL BULK RNA-SEQ DATASET###############
+library(WGCN1)
+library(reshape2)
+library(stringr)
+gene_expression_data <- read.csv('ALLFPKM-2.txt')
+clinical_traits_data <- read.csv('alltrait.txt')
+
+datExpr0 = as.data.frame(t(femData[, -c(1)]))
+names(datExpr0) = femData$substanceBXH
+rownames(datExpr0) = names(femData)[-c(1)]
+> datExpr0[1:6,1:6]
+gsg = goodSamplesGenes(datExpr0, verbose = 3);
+gsg$allOK
+
+if(!gsg$allOK)
+{
+    if(sum(!gsg$goodGenes)>0)
+    printFlush(paste("Removinggenes:",paste(names(datExpr0)[!gsg$goodGenes], collapse =",")));
+  if(sum(!gsg$goodSamples)>0)
+    printFlush(paste("Removingsamples:",paste(rownames(datExpr0)[!gsg$goodSamples], collapse =",")));
+    datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
+}
+
+sampleTree = hclust(dist(datExpr0), method ="average")
+
+sizeGrWindow(12,9)
+
+par(cex = 0.6)
+par(mar =c(0,4,2,0))
+plot(sampleTree, main ="Sampleclusteringtodetectoutliers",sub="", xlab="", cex.lab = 1.5,
+cex.axis= 1.5, cex.main = 2)
+
+
+allTraits = traitData
+femaleSamples =rownames(datExpr0)
+traitRows =match(femaleSamples, allTraits$NAME)
+datTraits = allTraits[traitRows, -1]
+rownames(datTraits) = allTraits[traitRows, 1]
+
+sampleTree2 = hclust(dist(datExpr0), method ="average")
+traitColors = numbers2colors(datTraits, signed = FALSE)
+plotDendroAndColors(sampleTree2, traitColors,
+                    groupLabels =names(datTraits),
+                    main ="Sample dendrogramand trait heatmap")
+powers =c(c(1:10),seq(from = 12, to=20,by=2))
+
+sft = pickSoftThreshold(datExpr0, powerVector = powers, verbose = 5)
+
+sizeGrWindow(9, 5)
+
+par(mfrow =c(1,2));
+cex1 = 0.9;
+
+plot(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
+     xlab="SoftThreshold(power)",ylab="ScaleFreeTopologyModelFit,signedR^2",type="n",
+     main =paste("Scaleindependence"));
+text(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
+     labels=powers,cex=cex1,col="red");
+
+
+net = blockwiseModules(datExpr0,power= 6,
+                       TOMType ="unsigned", minModuleSize = 30,
+                       reassignThreshold = 0, mergeCutHeight = 0.25,
+                       numericLabels = TRUE, pamRespectsDendro = FALSE,
+                       saveTOMs = TRUE,
+                       saveTOMFileBase ="femaleMouseTOM",
+                       verbose = 3)
+table(net$colors)
+sizeGrWindow(12, 9)
+
+mergedColors = labels2colors(net$colors)
+
+plotDendroAndColors(net$dendrograms[[1]], mergedColors[net$blockGenes[[1]]],
+                    "Modulecolors",
+                    dendroLabels = FALSE, hang = 0.03,
+                    addGuide = TRUE, guideHang = 0.05)
+
+nGenes =ncol(datExpr0);
+nSamples =nrow(datExpr0);
+
+MEs0 = moduleEigengenes(datExpr0, moduleColors)$eigengenes
+
+MEs = orderMEs(MEs0)
+
+moduleTraitCor =cor(MEs, datTraits, use ="p");
+moduleTraitPvalue = corPvalueStudent(moduleTraitCor, nSamples)
+
+
+
+
+corType = "pearson"
+corFnc = ifelse(corType=="pearson", cor, bicor)
+maxPOutliers = ifelse(corType=="pearson",1,0.05)
+robustY = ifelse(corType=="pearson",T,F)
+
+if (corType=="pearsoon") {
+  modTraitCor = cor(MEs, traitData, use = "p")
+  modTraitP = corPvalueStudent(modTraitCor, nSamples)
+} else {
+  modTraitCorP = bicorAndPvalue(MEs, traitData, robustY=robustY)
+  modTraitCor = modTraitCorP$bicor
+  modTraitP   = modTraitCorP$p
+}
+
+
+textMatrix = paste(signif(modTraitCor, 2), "\n(", signif(modTraitP, 1), ")", sep = "")
+
+
+
+		  
+			  
+tiff("WGCNA.tif", width=5, height=10)
+labeledHeatmap(Matrix = moduleTraitCor, xLabels = names(datTraits), yLabels = names(MEs), ySymbols = names(MEs), colorLabels = FALSE, colors = blueWhiteRed(50), textMatrix = textMatrix, setStdMargins = FALSE, cex.text = 0.5, zlim = c(-1,1), main = paste("Module-trait relationships"))
+dev.off()
+
+
+if (corType=="pearsoon") {
+  geneModuleMembership = as.data.frame(cor(datExpr0, MEs, use = "p"))
+  MMPvalue = as.data.frame(corPvalueStudent(
+             as.matrix(geneModuleMembership), nSamples))
+} else {
+  geneModuleMembershipA = bicorAndPvalue(datExpr0, MEs, robustY=robustY)
+  geneModuleMembership = geneModuleMembershipA$bicor
+  MMPvalue   = geneModuleMembershipA$p
+}
+
+if (corType=="pearsoon") {
+  geneTraitCor = as.data.frame(cor(datExpr0, traitData, use = "p"))
+  geneTraitP = as.data.frame(corPvalueStudent(
+             as.matrix(geneTraitCor), nSamples))
+} else {
+  geneTraitCorA = bicorAndPvalue(datExpr0, traitData, robustY=robustY)
+  geneTraitCor = as.data.frame(geneTraitCorA$bicor)
+  geneTraitP   = as.data.frame(geneTraitCorA$p)
+}
+
+module = "black"
+pheno = "COVID"
+modNames = substring(colnames(MEs), 3)
+module_column = match(module, modNames)
+pheno_column = match(pheno,colnames(traitData))
+moduleGenes = moduleColors == module
+sizeGrWindow(7, 7)
+par(mfrow = c(1,1))
+verboseScatterplot(abs(geneModuleMembership[moduleGenes, module_column]),
+                   abs(geneTraitCor[moduleGenes, pheno_column]),
+                   xlab = paste("Module Membership in", module, "module"),
+                   ylab = paste("Gene significance for", pheno),
+                   main = paste("Module membership vs. gene significance\n"),
+                   cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2, col = module)
