@@ -1,0 +1,190 @@
+###########D4(1),D11(2),D15(3),COVID+Kidney failure####D5(4),D7(5),D14(6),COVID#####################
+#####################Lung####################
+
+
+#####################Heart####################
+
+####D4####
+library(Seurat)
+D4heart.data=Read10X_h5("02-P240970-S048-R01_raw_feature_bc_matrix.h5")
+
+D4heart <- CreateSeuratObject(counts = D4heart.data, min.cells = 10, , min.features = 200, project = "D4")
+V8_CD4barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD4barcodes_vector <- as.character(V8_CD4barcodes)
+subset_D4heart <- subset(D4heart, cells = V8_CD4barcodes_vector)
+
+
+D4heartASSAY <- CreateAssayObject(counts = D4heart.data, min.cells = 10, min.features = 200,project = "D4")
+subset_D4heart_asssay <- subset(D4heartASSAY, cells = V8_CD4barcodes_vector)
+
+gene_names <- rownames(subset_D4heart_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D4heart_asssay@counts) <- gene_names
+rownames(subset_D4heart_asssay@data) <- gene_names
+subset_D4heart[['RNA']] <- subset_D4heart_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D4heart)
+subset_D4heart@meta.data <- metadata
+
+subset_D4heart@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D4heart@meta.data[["patient"]] <- "Patient 1"
+
+
+
+
+#####D5
+D5heart.data=Read10X_h5("02-P248880-S011-R01_raw_feature_bc_matrix.h5")
+
+D5heart <- CreateSeuratObject(counts = D5heart.data, min.cells = 10, , min.features = 200, project = "D5")
+V8_CD5barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD5barcodes_vector <- as.character(V8_CD5barcodes)
+subset_D5heart <- subset(D5heart, cells = V8_CD5barcodes_vector)
+
+
+D5heartASSAY <- CreateAssayObject(counts = D5heart.data, min.cells = 10, min.features = 200,project = "D5")
+subset_D5heart_asssay <- subset(D5heartASSAY, cells = V8_CD5barcodes_vector)
+
+gene_names <- rownames(subset_D5heart_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D5heart_asssay@counts) <- gene_names
+rownames(subset_D5heart_asssay@data) <- gene_names
+subset_D5heart[['RNA']] <- subset_D5heart_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D5heart)
+subset_D5heart@meta.data <- metadata
+
+subset_D5heart@meta.data[["disease"]] <- "COVID"
+subset_D5heart@meta.data[["patient"]] <- "Patient 4"
+
+
+
+
+
+
+
+#####D11
+D11heart.data=Read10X_h5("04-P079042-S071-R01_raw_feature_bc_matrix.h5")
+
+D11heart <- CreateSeuratObject(counts = D11heart.data, min.cells = 10, , min.features = 200, project = "D11")
+V8_CD11barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD11barcodes_vector <- as.character(V8_CD11barcodes)
+subset_D11heart <- subset(D11heart, cells = V8_CD11barcodes_vector)
+
+
+D11heartASSAY <- CreateAssayObject(counts = D11heart.data, min.cells = 10, min.features = 200,project = "D11")
+subset_D11heart_asssay <- subset(D11heartASSAY, cells = V8_CD11barcodes_vector)
+
+gene_names <- rownames(subset_D11heart_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D11heart_asssay@counts) <- gene_names
+rownames(subset_D11heart_asssay@data) <- gene_names
+subset_D11heart[['RNA']] <- subset_D11heart_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D11heart)
+subset_D11heart@meta.data <- metadata
+
+subset_D11heart@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D11heart@meta.data[["patient"]] <- "Patient 2"
+
+
+####D14
+D14heart.data=Read10X_h5("12-P485759-S012-R01_raw_feature_bc_matrix.h5")
+
+D14heart <- CreateSeuratObject(counts = D14heart.data, min.cells = 10, , min.features = 200, project = "D14")
+V8_CD14barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD14barcodes_vector <- as.character(V8_CD14barcodes)
+subset_D14heart <- subset(D14heart, cells = V8_CD14barcodes_vector)
+
+
+D14heartASSAY <- CreateAssayObject(counts = D14heart.data, min.cells = 10, min.features = 200,project = "D14")
+subset_D14heart_asssay <- subset(D14heartASSAY, cells = V8_CD14barcodes_vector)
+
+gene_names <- rownames(subset_D14heart_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D14heart_asssay@counts) <- gene_names
+rownames(subset_D14heart_asssay@data) <- gene_names
+subset_D14heart[['RNA']] <- subset_D14heart_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D14heart)
+subset_D14heart@meta.data <- metadata
+
+subset_D14heart@meta.data[["disease"]] <- "COVID"
+subset_D14heart@meta.data[["patient"]] <- "Patient 6"
+
+
+#########D15
+D15heart.data=Read10X_h5("12-P617758-S012-R01_raw_feature_bc_matrix.h5")
+
+D15heart <- CreateSeuratObject(counts = D15heart.data, min.cells = 10, , min.features = 200, project = "D15")
+V8_CD15barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD15barcodes_vector <- as.character(V8_CD15barcodes)
+subset_D15heart <- subset(D15heart, cells = V8_CD15barcodes_vector)
+
+
+D15heartASSAY <- CreateAssayObject(counts = D15heart.data, min.cells = 10, min.features = 200,project = "D15")
+subset_D15heart_asssay <- subset(D15heartASSAY, cells = V8_CD15barcodes_vector)
+
+gene_names <- rownames(subset_D15heart_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D15heart_asssay@counts) <- gene_names
+rownames(subset_D15heart_asssay@data) <- gene_names
+subset_D15heart[['RNA']] <- subset_D15heart_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D15heart)
+subset_D15heart@meta.data <- metadata
+
+subset_D15heart@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D15heart@meta.data[["patient"]] <- "Patient 3"
+
+####D7
+D7heart.data=Read10X_h5("02-P348762-S011-R01_raw_feature_bc_matrix.h5")
+
+D7heart <- CreateSeuratObject(counts = D7heart.data, min.cells = 10, , min.features = 200, project = "D7")
+V8_CD7barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD7barcodes_vector <- as.character(V8_CD7barcodes)
+subset_D7heart <- subset(D7heart, cells = V8_CD7barcodes_vector)
+
+
+D7heartASSAY <- CreateAssayObject(counts = D7heart.data, min.cells = 10, min.features = 200,project = "D7")
+subset_D7heart_asssay <- subset(D7heartASSAY, cells = V8_CD7barcodes_vector)
+
+gene_names <- rownames(subset_D7heart_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D7heart_asssay@counts) <- gene_names
+rownames(subset_D7heart_asssay@data) <- gene_names
+subset_D7heart[['RNA']] <- subset_D7heart_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D7heart)
+subset_D7heart@meta.data <- metadata
+
+subset_D7heart@meta.data[["disease"]] <- "COVID"
+subset_D7heart@meta.data[["patient"]] <- "Patient 5"
+heart.list <- list(subset_D15heart,subset_D11heart,subset_D14heart,subset_D5heart,subset_D4heart,subset_D7heart)
+heart.list <- lapply(X = heart.list, FUN = SCTransform)
+features <- SelectIntegrationFeatures(object.list = heart.list, nfeatures = 2000)
+heart.list <- PrepSCTIntegration(object.list = heart.list, anchor.features = features)
+heart.anchors <- FindIntegrationAnchors(object.list = heart.list, normalization.method = "SCT", 
+                                          anchor.features = features)
+heart2 <- IntegrateData(anchorset = heart.anchors, normalization.method = "SCT")
+DefaultAssay(heart2) <- "integrated"
+
+# Standard pre-processing workflow
+heart2 <- ScaleData(heart2, features = all.genes)
+heart2 <- RunPCA(heart2, features = VariableFeatures(object = heart2))
+ElbowPlot(heart2)
+heart2 <- FindNeighbors(heart2, dims = 1:17)
+heart2 <- FindClusters(heart2, resolution = 0.5)
+heart2 <- RunUMAP(heart2, dims = 1:17)
+DimPlot(heart2, reduction = "umap")
