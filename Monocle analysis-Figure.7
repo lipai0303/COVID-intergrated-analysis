@@ -1,0 +1,38 @@
+library(dplyr)
+library(monocle3)
+library(Seurat)
+library(tidyverse)
+library(SeuratWrappers)
+library(ggplot2)
+library(ggridges)
+lung.epi<-readRDS("lungepi.rds")
+Idents(lung.epi)<-"disease"
+lung.epiCOVKID <- subset(lung.epi, idents = 'COVID',invert=TRUE)
+
+data<-lung.epiCOVKID
+cds <- as.cell_data_set(data)
+fData(cds)
+fData(cds)$gene_short_name <- rownames(fData(cds))
+recreate.partitions <- c(rep(1, length(cds@colData@rownames)))
+names(recreate.partitions) <- cds@colData@rownames
+recreate.partitions <- as.factor(recreate.partitions)
+recreate.partitions
+
+cds@clusters@listData[["UMAP"]][["partitions"]] <- recreate.partitions
+Idents(data)<-"RNA_snn_res.0.2"
+list.cluster <- data@active.ident
+cds@clusters@listData[["UMAP"]][["clusters"]] <- list.cluster
+cds@int_colData@listData[["reducedDims"]]@listData[["UMAP"]] <- data@reductions$umap@cell.embeddings
+cluster.before.traj <-plot_cells(cds, color_cells_by = "cluster", label_groups_by_cluster = F, 
+           group_label_size = 5) + theme(legend.position = "right")
+cluster.before.traj
+cds <- learn_graph(cds, use_partition = F)
+plot_cells(cds, color_cells_by = "cluster", label_groups_by_cluster = F,
+           label_branch_points = T, label_roots = T, label_leaves = F,
+           group_label_size = 5)
+cds <- order_cells(cds, reduction_method = "UMAP", root_cells = colnames(cds[, clusters(cds) == 5]))
+
+tiff("Pseudotime-lungepiCOVKID.tif", width=300, height=250)
+plot_cells(cds, color_cells_by = "pseudotime", label_groups_by_cluster = F,
+           label_branch_points = F, label_roots = F, label_leaves = F)+ggtitle(NULL)+theme_dr(xlength = 0.2,ylength = 0.2,arrow = arrow(length = unit(0.2, "inches"),type = "closed")) + theme(panel.grid = element_blank(),axis.title = element_text(face = 2,hjust = 0.03)) 
+dev.off()
