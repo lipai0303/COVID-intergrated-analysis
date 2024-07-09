@@ -2,6 +2,7 @@
 #####################Lung####################
 
 ####D4####
+library(Seurat)
 D4lung.data=Read10X_h5("02-P240970-S008-R01_raw_feature_bc_matrix.h5")
 
 D4lung <- CreateSeuratObject(counts = D4lung.data, min.cells = 10, , min.features = 200, project = "D4")
