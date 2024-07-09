@@ -1,0 +1,224 @@
+#########Healthy group###########
+BLOOD1.data <- Read10X(data.dir = "XXX")
+BLOOD1 <- CreateSeuratObject(counts = BLOOD1.data, project = "control1", min.cells = 3, min.features = 200)
+BLOOD1[["percent.mt"]] <- PercentageFeatureSet(BLOOD1, pattern = "^MT-")
+BLOOD1 <- subset(BLOOD1, subset = nFeature_RNA > 500 & nFeature_RNA < 3000 & percent.mt < 20)
+BLOOD1 <- NormalizeData(BLOOD1)
+BLOOD1 <- FindVariableFeatures(BLOOD1, selection.method = "vst", nfeatures = 2000)
+all.genes <- rownames(BLOOD1)
+BLOOD1 <- ScaleData(BLOOD1, features = all.genes)
+BLOOD1 <- RunPCA(BLOOD1, features = VariableFeatures(object = BLOOD1))
+ElbowPlot(BLOOD1)
+BLOOD1 <- FindNeighbors(BLOOD1, dims = 1:10)
+BLOOD1 <- FindClusters(BLOOD1, resolution = 0.2)
+BLOOD1 <- RunUMAP(BLOOD1, dims = 1:10)
+DimPlot(BLOOD1, reduction = "umap")
+
+BLOOD1@meta.data[["disease"]] <- "CONTROL"
+BLOOD1@meta.data[["patient"]] <- "CONTROL1"
+
+
+
+BLOOD2.data <- Read10X(data.dir = "XXX")
+BLOOD2 <- CreateSeuratObject(counts = BLOOD2.data, project = "control2", min.cells = 3, min.features = 200)
+BLOOD2[["percent.mt"]] <- PercentageFeatureSet(BLOOD2, pattern = "^MT-")
+BLOOD2 <- subset(BLOOD2, subset = nFeature_RNA > 500 & nFeature_RNA < 3000 & percent.mt < 20)
+BLOOD2 <- NormalizeData(BLOOD2)
+BLOOD2 <- FindVariableFeatures(BLOOD2, selection.method = "vst", nfeatures = 2000)
+all.genes <- rownames(BLOOD2)
+BLOOD2 <- ScaleData(BLOOD2, features = all.genes)
+BLOOD2 <- RunPCA(BLOOD2, features = VariableFeatures(object = BLOOD2))
+ElbowPlot(BLOOD2)
+BLOOD2 <- FindNeighbors(BLOOD2, dims = 1:10)
+BLOOD2 <- FindClusters(BLOOD2, resolution = 0.2)
+BLOOD2 <- RunUMAP(BLOOD2, dims = 1:10)
+DimPlot(BLOOD2, reduction = "umap")
+
+BLOOD2@meta.data[["disease"]] <- "CONTROL"
+BLOOD2@meta.data[["patient"]] <- "CONTROL2"
+
+
+
+BLOOD3.data <- Read10X(data.dir = "XXX")
+BLOOD3 <- CreateSeuratObject(counts = BLOOD3.data, project = "control3", min.cells = 3, min.features = 200)
+BLOOD3[["percent.mt"]] <- PercentageFeatureSet(BLOOD3, pattern = "^MT-")
+BLOOD3 <- subset(BLOOD3, subset = nFeature_RNA > 500 & nFeature_RNA < 3000 & percent.mt < 20)
+BLOOD3 <- NormalizeData(BLOOD3)
+BLOOD3 <- FindVariableFeatures(BLOOD3, selection.method = "vst", nfeatures = 2000)
+all.genes <- rownames(BLOOD3)
+BLOOD3 <- ScaleData(BLOOD3, features = all.genes)
+BLOOD3 <- RunPCA(BLOOD3, features = VariableFeatures(object = BLOOD3))
+ElbowPlot(BLOOD3)
+BLOOD3 <- FindNeighbors(BLOOD3, dims = 1:10)
+BLOOD3 <- FindClusters(BLOOD3, resolution = 0.2)
+BLOOD3 <- RunUMAP(BLOOD3, dims = 1:10)
+DimPlot(BLOOD3, reduction = "umap")
+
+BLOOD3@meta.data[["disease"]] <- "CONTROL"
+BLOOD3@meta.data[["patient"]] <- "CONTROL3"
+
+
+
+
+BLOOD4.data <- Read10X(data.dir = "XXX")
+BLOOD4 <- CreateSeuratObject(counts = BLOOD4.data, project = "control4", min.cells = 3, min.features = 200)
+BLOOD4[["percent.mt"]] <- PercentageFeatureSet(BLOOD4, pattern = "^MT-")
+BLOOD4 <- subset(BLOOD4, subset = nFeature_RNA > 500 & nFeature_RNA < 3000 & percent.mt < 20)
+BLOOD4 <- NormalizeData(BLOOD4)
+BLOOD4 <- FindVariableFeatures(BLOOD4, selection.method = "vst", nfeatures = 2000)
+all.genes <- rownames(BLOOD4)
+BLOOD4 <- ScaleData(BLOOD4, features = all.genes)
+BLOOD4 <- RunPCA(BLOOD4, features = VariableFeatures(object = BLOOD4))
+ElbowPlot(BLOOD4)
+BLOOD4 <- FindNeighbors(BLOOD4, dims = 1:10)
+BLOOD4 <- FindClusters(BLOOD4, resolution = 0.2)
+BLOOD4 <- RunUMAP(BLOOD4, dims = 1:10)
+DimPlot(BLOOD4, reduction = "umap")
+
+BLOOD4@meta.data[["disease"]] <- "CONTROL"
+BLOOD4@meta.data[["patient"]] <- "CONTROL4"
+
+
+
+
+#########COVID GROUP#######
+
+BLOOD5.data <- Read10X(data.dir = "xxx/")
+BLOOD5 <- CreateSeuratObject(counts = BLOOD5.data, project = "COVID1", min.cells = 3, min.features = 200)
+BLOOD5[["percent.mt"]] <- PercentageFeatureSet(BLOOD5, pattern = "^MT-")
+BLOOD5 <- subset(BLOOD5, subset = nFeature_RNA > 500 & nFeature_RNA < 3000 & percent.mt < 20)
+BLOOD5 <- NormalizeData(BLOOD5)
+BLOOD5 <- FindVariableFeatures(BLOOD5, selection.method = "vst", nfeatures = 2000)
+all.genes <- rownames(BLOOD5)
+BLOOD5 <- ScaleData(BLOOD5, features = all.genes)
+BLOOD5 <- RunPCA(BLOOD5, features = VariableFeatures(object = BLOOD5))
+ElbowPlot(BLOOD5)
+BLOOD5 <- FindNeighbors(BLOOD5, dims = 1:10)
+BLOOD5 <- FindClusters(BLOOD5, resolution = 0.2)
+BLOOD5 <- RunUMAP(BLOOD5, dims = 1:10)
+DimPlot(BLOOD5, reduction = "umap")
+
+BLOOD5@meta.data[["disease"]] <- "COVID"
+BLOOD5@meta.data[["patient"]] <- "COVID1"
+
+
+
+
+BLOOD6.data <- Read10X(data.dir = "xxx/")
+BLOOD6 <- CreateSeuratObject(counts = BLOOD6.data, project = "COVID2", min.cells = 3, min.features = 200)
+BLOOD6[["percent.mt"]] <- PercentageFeatureSet(BLOOD6, pattern = "^MT-")
+BLOOD6 <- subset(BLOOD6, subset = nFeature_RNA > 500 & nFeature_RNA < 3000 & percent.mt < 20)
+BLOOD6 <- NormalizeData(BLOOD6)
+BLOOD6 <- FindVariableFeatures(BLOOD6, selection.method = "vst", nfeatures = 2000)
+all.genes <- rownames(BLOOD6)
+BLOOD6 <- ScaleData(BLOOD6, features = all.genes)
+BLOOD6 <- RunPCA(BLOOD6, features = VariableFeatures(object = BLOOD6))
+ElbowPlot(BLOOD6)
+BLOOD6 <- FindNeighbors(BLOOD6, dims = 1:10)
+BLOOD6 <- FindClusters(BLOOD6, resolution = 0.2)
+BLOOD6 <- RunUMAP(BLOOD6, dims = 1:10)
+DimPlot(BLOOD6, reduction = "umap")
+
+BLOOD6@meta.data[["disease"]] <- "COVID"
+BLOOD6@meta.data[["patient"]] <- "COVID2"
+
+
+
+
+BLOOD7.data <- Read10X(data.dir = "xxx/")
+BLOOD7 <- CreateSeuratObject(counts = BLOOD7.data, project = "COVID3", min.cells = 3, min.features = 200)
+BLOOD7[["percent.mt"]] <- PercentageFeatureSet(BLOOD7, pattern = "^MT-")
+BLOOD7 <- subset(BLOOD7, subset = nFeature_RNA > 500 & nFeature_RNA < 3000 & percent.mt < 20)
+BLOOD7 <- NormalizeData(BLOOD7)
+BLOOD7 <- FindVariableFeatures(BLOOD7, selection.method = "vst", nfeatures = 2000)
+all.genes <- rownames(BLOOD7)
+BLOOD7 <- ScaleData(BLOOD7, features = all.genes)
+BLOOD7 <- RunPCA(BLOOD7, features = VariableFeatures(object = BLOOD7))
+ElbowPlot(BLOOD7)
+BLOOD7 <- FindNeighbors(BLOOD7, dims = 1:10)
+BLOOD7 <- FindClusters(BLOOD7, resolution = 0.2)
+BLOOD7 <- RunUMAP(BLOOD7, dims = 1:10)
+DimPlot(BLOOD7, reduction = "umap")
+
+BLOOD7@meta.data[["disease"]] <- "COVID"
+BLOOD7@meta.data[["patient"]] <- "COVID3"
+
+
+
+BLOOD8.data <- Read10X(data.dir = "xxx/")
+BLOOD8 <- CreateSeuratObject(counts = BLOOD8.data, project = "COVID4", min.cells = 3, min.features = 200)
+BLOOD8[["percent.mt"]] <- PercentageFeatureSet(BLOOD8, pattern = "^MT-")
+BLOOD8 <- subset(BLOOD8, subset = nFeature_RNA > 500 & nFeature_RNA < 3000 & percent.mt < 20)
+BLOOD8 <- NormalizeData(BLOOD8)
+BLOOD8 <- FindVariableFeatures(BLOOD8, selection.method = "vst", nfeatures = 2000)
+all.genes <- rownames(BLOOD8)
+BLOOD8 <- ScaleData(BLOOD8, features = all.genes)
+BLOOD8 <- RunPCA(BLOOD8, features = VariableFeatures(object = BLOOD8))
+ElbowPlot(BLOOD8)
+BLOOD8 <- FindNeighbors(BLOOD8, dims = 1:10)
+BLOOD8 <- FindClusters(BLOOD8, resolution = 0.2)
+BLOOD8 <- RunUMAP(BLOOD8, dims = 1:10)
+DimPlot(BLOOD8, reduction = "umap")
+
+BLOOD8@meta.data[["disease"]] <- "COVID"
+BLOOD8@meta.data[["patient"]] <- "COVID4"
+
+
+
+#####Merge#####
+
+blood.list <- list(BLOOD1,BLOOD2,BLOOD3,BLOOD4,BLOOD5,BLOOD6,BLOOD7,BLOOD8)
+blood.list <- lapply(X = blood.list, FUN = SCTransform)
+features <- SelectIntegrationFeatures(object.list = blood.list, nfeatures = 2000)
+blood.list <- PrepSCTIntegration(object.list = blood.list, anchor.features = features)
+blood.anchors <- FindIntegrationAnchors(object.list = blood.list, normalization.method = "SCT", 
+                                          anchor.features = features)
+blood <- IntegrateData(anchorset = blood.anchors, normalization.method = "SCT")
+DefaultAssay(blood) <- "integrated"
+
+# Standard pre-processing workflow
+blood <- ScaleData(blood, features = all.genes)
+blood <- RunPCA(blood, features = VariableFeatures(object = blood))
+ElbowPlot(blood)
+blood <- FindNeighbors(blood, dims = 1:10)
+blood <- FindClusters(blood, resolution = 0.5)
+blood <- RunUMAP(blood, dims = 1:10)
+DimPlot(blood, reduction = "umap")
+
+
+FeaturePlot(blood, features = "CD13")
+
+####ANNOTATION
+Idents(blood) <- "integrated_snn_res.0.5"
+
+new.cluster.ids <- c("T/NK","T/NK","T/NK","T/NK","Neutrophils","T/NK","Neutrophils","B","T/NK","T/NK","Neutrophils","B","Platelets","Neutrophils","Plasma","Plasma")
+names(new.cluster.ids) <- levels(blood)
+blood <- RenameIdents(blood, new.cluster.ids)
+
+
+###create new metadata@celltype
+levels(blood) <- c("Neutrophils","B","T/NK","Platelets","Plasma")
+blood@meta.data[["celltype"]] <- blood@active.ident
+
+
+
+####combine
+blood@meta.data$celltype_disease <- paste0(blood@meta.data$celltype,"_",blood@meta.data$disease)
+
+
+
+#######VISION for gene set analysis###########
+
+library(VISION)
+library(pheatmap)
+signatures <- "h.all.v6.2.symbols.gmt"
+
+DefaultAssay(blood)<-"RNA"
+vision.obj <- Vision(blood, signatures = signatures,pool =F)
+options(mc.cores=10)
+vision.obj <- analyze(vision.obj)
+sigScores <- getSignatureScores(vision.obj)
+sigScores <- as.data.frame(sigScores)
+blood[['GSEA']] <- CreateAssayObject(counts = t(sigScores))
+test <- AverageExpression(blood,group.by="celltype_disease",assays = "GSEA")
+saveRDS(blood,"blood.rds")
