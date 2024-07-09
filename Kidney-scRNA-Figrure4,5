@@ -1,0 +1,263 @@
+###########D4(1),D11(2),D15(3),COVID+Kidney failure####D5(4),D7(5),D14(6),COVID#####################
+####D4####
+library(Seurat)
+D4kidney.data=Read10X_h5("02-P240970-S036-R01_raw_feature_bc_matrix.h5")
+
+D4kidney <- CreateSeuratObject(counts = D4kidney.data, min.cells = 10, , min.features = 200, project = "D4")
+V8_CD4barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD4barcodes_vector <- as.character(V8_CD4barcodes)
+subset_D4kidney <- subset(D4kidney, cells = V8_CD4barcodes_vector)
+
+
+D4kidneyASSAY <- CreateAssayObject(counts = D4kidney.data, min.cells = 10, min.features = 200,project = "D4")
+subset_D4kidney_asssay <- subset(D4kidneyASSAY, cells = V8_CD4barcodes_vector)
+
+gene_names <- rownames(subset_D4kidney_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D4kidney_asssay@counts) <- gene_names
+rownames(subset_D4kidney_asssay@data) <- gene_names
+subset_D4kidney[['RNA']] <- subset_D4kidney_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D4kidney)
+subset_D4kidney@meta.data <- metadata
+
+subset_D4kidney@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D4kidney@meta.data[["patient"]] <- "Patient 1"
+
+
+
+
+#####D5
+D5kidney.data=Read10X_h5("02-P248880-S026-R01_raw_feature_bc_matrix.h5")
+
+D5kidney <- CreateSeuratObject(counts = D5kidney.data, min.cells = 10, , min.features = 200, project = "D5")
+V8_CD5barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD5barcodes_vector <- as.character(V8_CD5barcodes)
+subset_D5kidney <- subset(D5kidney, cells = V8_CD5barcodes_vector)
+
+
+D5kidneyASSAY <- CreateAssayObject(counts = D5kidney.data, min.cells = 10, min.features = 200,project = "D5")
+subset_D5kidney_asssay <- subset(D5kidneyASSAY, cells = V8_CD5barcodes_vector)
+
+gene_names <- rownames(subset_D5kidney_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D5kidney_asssay@counts) <- gene_names
+rownames(subset_D5kidney_asssay@data) <- gene_names
+subset_D5kidney[['RNA']] <- subset_D5kidney_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D5kidney)
+subset_D5kidney@meta.data <- metadata
+
+subset_D5kidney@meta.data[["disease"]] <- "COVID"
+subset_D5kidney@meta.data[["patient"]] <- "Patient 4"
+
+
+
+
+
+
+
+#####D11
+D11kidney.data=Read10X_h5("04-P079042-S047-R01_raw_feature_bc_matrix.h5")
+
+D11kidney <- CreateSeuratObject(counts = D11kidney.data, min.cells = 10, , min.features = 200, project = "D11")
+V8_CD11barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD11barcodes_vector <- as.character(V8_CD11barcodes)
+subset_D11kidney <- subset(D11kidney, cells = V8_CD11barcodes_vector)
+
+
+D11kidneyASSAY <- CreateAssayObject(counts = D11kidney.data, min.cells = 10, min.features = 200,project = "D11")
+subset_D11kidney_asssay <- subset(D11kidneyASSAY, cells = V8_CD11barcodes_vector)
+
+gene_names <- rownames(subset_D11kidney_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D11kidney_asssay@counts) <- gene_names
+rownames(subset_D11kidney_asssay@data) <- gene_names
+subset_D11kidney[['RNA']] <- subset_D11kidney_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D11kidney)
+subset_D11kidney@meta.data <- metadata
+
+subset_D11kidney@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D11kidney@meta.data[["patient"]] <- "Patient 2"
+
+
+####D14
+D14kidney.data=Read10X_h5("12-P485759-S016-R01_raw_feature_bc_matrix.h5")
+
+D14kidney <- CreateSeuratObject(counts = D14kidney.data, min.cells = 10, , min.features = 200, project = "D14")
+V8_CD14barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD14barcodes_vector <- as.character(V8_CD14barcodes)
+subset_D14kidney <- subset(D14kidney, cells = V8_CD14barcodes_vector)
+
+
+D14kidneyASSAY <- CreateAssayObject(counts = D14kidney.data, min.cells = 10, min.features = 200,project = "D14")
+subset_D14kidney_asssay <- subset(D14kidneyASSAY, cells = V8_CD14barcodes_vector)
+
+gene_names <- rownames(subset_D14kidney_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D14kidney_asssay@counts) <- gene_names
+rownames(subset_D14kidney_asssay@data) <- gene_names
+subset_D14kidney[['RNA']] <- subset_D14kidney_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D14kidney)
+subset_D14kidney@meta.data <- metadata
+
+subset_D14kidney@meta.data[["disease"]] <- "COVID"
+subset_D14kidney@meta.data[["patient"]] <- "Patient 6"
+
+
+#########D15
+D15kidney.data=Read10X_h5("12-P617758-S006-R01_raw_feature_bc_matrix.h5")
+
+D15kidney <- CreateSeuratObject(counts = D15kidney.data, min.cells = 10, , min.features = 200, project = "D15")
+V8_CD15barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD15barcodes_vector <- as.character(V8_CD15barcodes)
+subset_D15kidney <- subset(D15kidney, cells = V8_CD15barcodes_vector)
+
+
+D15kidneyASSAY <- CreateAssayObject(counts = D15kidney.data, min.cells = 10, min.features = 200,project = "D15")
+subset_D15kidney_asssay <- subset(D15kidneyASSAY, cells = V8_CD15barcodes_vector)
+
+gene_names <- rownames(subset_D15kidney_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D15kidney_asssay@counts) <- gene_names
+rownames(subset_D15kidney_asssay@data) <- gene_names
+subset_D15kidney[['RNA']] <- subset_D15kidney_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D15kidney)
+subset_D15kidney@meta.data <- metadata
+
+subset_D15kidney@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D15kidney@meta.data[["patient"]] <- "Patient 3"
+
+####D7
+D7kidney.data=Read10X_h5("02-P348762-S026-R01_raw_feature_bc_matrix.h5")
+
+D7kidney <- CreateSeuratObject(counts = D7kidney.data, min.cells = 10, , min.features = 200, project = "D7")
+V8_CD7barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD7barcodes_vector <- as.character(V8_CD7barcodes)
+subset_D7kidney <- subset(D7kidney, cells = V8_CD7barcodes_vector)
+
+
+D7kidneyASSAY <- CreateAssayObject(counts = D7kidney.data, min.cells = 10, min.features = 200,project = "D7")
+subset_D7kidney_asssay <- subset(D7kidneyASSAY, cells = V8_CD7barcodes_vector)
+
+gene_names <- rownames(subset_D7kidney_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D7kidney_asssay@counts) <- gene_names
+rownames(subset_D7kidney_asssay@data) <- gene_names
+subset_D7kidney[['RNA']] <- subset_D7kidney_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D7kidney)
+subset_D7kidney@meta.data <- metadata
+
+subset_D7kidney@meta.data[["disease"]] <- "COVID"
+subset_D7kidney@meta.data[["patient"]] <- "Patient 5"
+
+kidney.list <- list(subset_D15kidney,subset_D11kidney,subset_D14kidney,subset_D5kidney,subset_D4kidney,subset_D7kidney)
+kidney.list <- lapply(X = kidney.list, FUN = SCTransform)
+features <- SelectIntegrationFeatures(object.list = kidney.list, nfeatures = 2000)
+kidney.list <- PrepSCTIntegration(object.list = kidney.list, anchor.features = features)
+kidney.anchors <- FindIntegrationAnchors(object.list = kidney.list, normalization.method = "SCT", 
+                                          anchor.features = features)
+kidney2 <- IntegrateData(anchorset = kidney.anchors, normalization.method = "SCT")
+DefaultAssay(kidney2) <- "integrated"
+
+# Standard pre-processing workflow
+kidney2 <- ScaleData(kidney2, features = all.genes)
+kidney2 <- RunPCA(kidney2, features = VariableFeatures(object = kidney2))
+ElbowPlot(kidney2)
+kidney2 <- FindNeighbors(kidney2, dims = 1:17)
+kidney2 <- FindClusters(kidney2, resolution = 0.5)
+kidney2 <- RunUMAP(kidney2, dims = 1:17)
+DimPlot(kidney2, reduction = "umap")
+
+###############No COVID group (healthy,CKD,DKD)#########
+seurat_object<-readRDS("seurat_object.rds")
+subset<-subset(seurat_object, idents = c("PREMIERE13","PREMIERE14","PREMIERE15","PREMIERE27","PREMIERE28","PREMIERE29","PREMIERE30","PREMIERE31","PREMIERE32","PREMIERE33","PREMIERE34","PREMIERE35"))
+subset <- FindVariableFeatures(subset, selection.method = "vst", nfeatures = 2000)
+
+all.genes <- rownames(subset)
+subset <- ScaleData(subset, features = all.genes)
+subset <- RunPCA(subset, features = VariableFeatures(object = subset))
+ElbowPlot(subset)
+subset <- FindNeighbors(subset, dims = 1:20)
+subset <- FindClusters(subset, resolution = 0.2)
+subset <- RunUMAP(subset, dims = 1:20)
+DimPlot(subset, reduction = "umap")
+#####Add metadata
+subset@meta.data <- subset@meta.data %>%
+  mutate(Disease = case_when(
+    experiment %in%  c("PREMIERE13","PREMIERE14","PREMIERE15") ~ "DKD",
+    experiment %in%  c("PREMIERE27","PREMIERE28","PREMIERE29") ~ "CKD",
+    experiment %in%  c("PREMIERE30","PREMIERE31","PREMIERE32","PREMIERE33","PREMIERE34","PREMIERE35") ~ "Healthy"
+  ))
+  
+  
+##############Intergrate with COVID group###################
+
+kidney.list <- list(kidney2,subset)
+kidney.list <- lapply(X = kidney.list, FUN = SCTransform)
+features <- SelectIntegrationFeatures(object.list = kidney.list, nfeatures = 2000)
+kidney.list <- PrepSCTIntegration(object.list = kidney.list, anchor.features = features)
+kidney.anchors <- FindIntegrationAnchors(object.list = kidney.list, normalization.method = "SCT", 
+                                          anchor.features = features)
+kidney3 <- IntegrateData(anchorset = kidney.anchors, normalization.method = "SCT")
+DefaultAssay(kidney3) <- "integrated"
+
+# Standard pre-processing workflow
+kidney3 <- ScaleData(kidney3, features = all.genes)
+kidney3 <- RunPCA(kidney3, features = VariableFeatures(object = kidney3))
+ElbowPlot(kidney3)
+kidney3 <- FindNeighbors(kidney3, dims = 1:20)
+kidney3 <- FindClusters(kidney3, resolution = 0.2)
+kidney3 <- RunUMAP(kidney3, dims = 1:20)
+DimPlot(kidney3, reduction = "umap")#####
+
+
+
+####ANNOTATION
+Idents(kidney3) <- "integrated_snn_res.0.2"
+
+new.cluster.ids <- c("Proximal tubules","Proximal tubules","Connecting tubules","Connecting tubules","Connecting tubules","Thick ascending limb","Endothelium","Leukocytes/interstitium","Collecting duct","Pericyte","Connecting tubules","Podocyte","Podocyte","Collecting duct","Thick ascending limb","Proximal tubules","Connecting tubules")
+names(new.cluster.ids) <- levels(kidney3)
+kidney3 <- RenameIdents(kidney3, new.cluster.ids)
+
+
+###create new metadata@celltype
+levels(kidney3) <- c("Proximal tubules","Connecting tubules","Thick ascending limb","Endothelium","Leukocytes/interstitium","Collecting duct","Pericyte","Podocyte")
+kidney3@meta.data[["newcelltype"]] <- kidney3@active.ident
+
+
+
+####combine
+kidney3@meta.data$newcelltype_disease <- paste0(kidney3@meta.data$disease,"_",kidney3@meta.data$newcelltype)
+
+
+###########Gene set analysis by VISION######################
+library(VISION)
+library(pheatmap)
+signatures <- "h.all.v6.2.symbols.gmt"
+
+DefaultAssay(kidney3)<-"RNA"
+vision.obj <- Vision(kidney3, signatures = signatures,pool =F)
+options(mc.cores=10)
+vision.obj <- analyze(vision.obj)
+sigScores <- getSignatureScores(vision.obj)
+sigScores <- as.data.frame(sigScores)
+kidney3[['GSEA']] <- CreateAssayObject(counts = t(sigScores))
+test <- AverageExpression(kidney3,group.by="newcelltype_disease",assays = "GSEA")
+saveRDS(kidney3,"kidney3GSEA.rds")
