@@ -1,0 +1,187 @@
+###########D4(1),D11(2),D15(3),COVID+Kidney failure####D5(4),D7(5),D14(6),COVID#####################
+#####################Lung####################
+
+####D4####
+D4lung.data=Read10X_h5("02-P240970-S008-R01_raw_feature_bc_matrix.h5")
+
+D4lung <- CreateSeuratObject(counts = D4lung.data, min.cells = 10, , min.features = 200, project = "D4")
+V8_CD4barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD4barcodes_vector <- as.character(V8_CD4barcodes)
+subset_D4lung <- subset(D4lung, cells = V8_CD4barcodes_vector)
+
+
+D4lungASSAY <- CreateAssayObject(counts = D4lung.data, min.cells = 10, min.features = 200,project = "D4")
+subset_D4lung_asssay <- subset(D4lungASSAY, cells = V8_CD4barcodes_vector)
+
+gene_names <- rownames(subset_D4lung_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D4lung_asssay@counts) <- gene_names
+rownames(subset_D4lung_asssay@data) <- gene_names
+subset_D4lung[['RNA']] <- subset_D4lung_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D4lung)
+subset_D4lung@meta.data <- metadata
+
+subset_D4lung@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D4lung@meta.data[["patient"]] <- "Patient 1"
+
+
+
+
+#####D5
+D5lung.data=Read10X_h5("02-P248880-S086-R01_raw_feature_bc_matrix.h5")
+
+D5lung <- CreateSeuratObject(counts = D5lung.data, min.cells = 10, , min.features = 200, project = "D5")
+V8_CD5barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD5barcodes_vector <- as.character(V8_CD5barcodes)
+subset_D5lung <- subset(D5lung, cells = V8_CD5barcodes_vector)
+
+
+D5lungASSAY <- CreateAssayObject(counts = D5lung.data, min.cells = 10, min.features = 200,project = "D5")
+subset_D5lung_asssay <- subset(D5lungASSAY, cells = V8_CD5barcodes_vector)
+
+gene_names <- rownames(subset_D5lung_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D5lung_asssay@counts) <- gene_names
+rownames(subset_D5lung_asssay@data) <- gene_names
+subset_D5lung[['RNA']] <- subset_D5lung_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D5lung)
+subset_D5lung@meta.data <- metadata
+
+subset_D5lung@meta.data[["disease"]] <- "COVID"
+subset_D5lung@meta.data[["patient"]] <- "Patient 4"
+
+
+
+
+
+
+
+#####D11
+D11lung.data=Read10X_h5("04-P079042-S015-R01_raw_feature_bc_matrix.h5")
+
+D11lung <- CreateSeuratObject(counts = D11lung.data, min.cells = 10, , min.features = 200, project = "D11")
+V8_CD11barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD11barcodes_vector <- as.character(V8_CD11barcodes)
+subset_D11lung <- subset(D11lung, cells = V8_CD11barcodes_vector)
+
+
+D11lungASSAY <- CreateAssayObject(counts = D11lung.data, min.cells = 10, min.features = 200,project = "D11")
+subset_D11lung_asssay <- subset(D11lungASSAY, cells = V8_CD11barcodes_vector)
+
+gene_names <- rownames(subset_D11lung_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D11lung_asssay@counts) <- gene_names
+rownames(subset_D11lung_asssay@data) <- gene_names
+subset_D11lung[['RNA']] <- subset_D11lung_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D11lung)
+subset_D11lung@meta.data <- metadata
+
+subset_D11lung@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D11lung@meta.data[["patient"]] <- "Patient 2"
+
+
+####D14
+D14lung.data=Read10X_h5("12-P485759-S008-R01_raw_feature_bc_matrix.h5")
+
+D14lung <- CreateSeuratObject(counts = D14lung.data, min.cells = 10, , min.features = 200, project = "D14")
+V8_CD14barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD14barcodes_vector <- as.character(V8_CD14barcodes)
+subset_D14lung <- subset(D14lung, cells = V8_CD14barcodes_vector)
+
+
+D14lungASSAY <- CreateAssayObject(counts = D14lung.data, min.cells = 10, min.features = 200,project = "D14")
+subset_D14lung_asssay <- subset(D14lungASSAY, cells = V8_CD14barcodes_vector)
+
+gene_names <- rownames(subset_D14lung_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D14lung_asssay@counts) <- gene_names
+rownames(subset_D14lung_asssay@data) <- gene_names
+subset_D14lung[['RNA']] <- subset_D14lung_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D14lung)
+subset_D14lung@meta.data <- metadata
+
+subset_D14lung@meta.data[["disease"]] <- "COVID"
+subset_D14lung@meta.data[["patient"]] <- "Patient 6"
+
+
+#########D15
+D15lung.data=Read10X_h5("12-P617758-S008-R01_raw_feature_bc_matrix.h5")
+
+D15lung <- CreateSeuratObject(counts = D15lung.data, min.cells = 10, , min.features = 200, project = "D15")
+V8_CD15barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD15barcodes_vector <- as.character(V8_CD15barcodes)
+subset_D15lung <- subset(D15lung, cells = V8_CD15barcodes_vector)
+
+
+D15lungASSAY <- CreateAssayObject(counts = D15lung.data, min.cells = 10, min.features = 200,project = "D15")
+subset_D15lung_asssay <- subset(D15lungASSAY, cells = V8_CD15barcodes_vector)
+
+gene_names <- rownames(subset_D15lung_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D15lung_asssay@counts) <- gene_names
+rownames(subset_D15lung_asssay@data) <- gene_names
+subset_D15lung[['RNA']] <- subset_D15lung_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D15lung)
+subset_D15lung@meta.data <- metadata
+
+subset_D15lung@meta.data[["disease"]] <- "COVID+Kidney failure"
+subset_D15lung@meta.data[["patient"]] <- "Patient 3"
+
+####D7
+D7lung.data=Read10X_h5("02-P348762-S056-R01_raw_feature_bc_matrix.h5")
+
+D7lung <- CreateSeuratObject(counts = D7lung.data, min.cells = 10, , min.features = 200, project = "D7")
+V8_CD7barcodes <- read.csv("metadata-2.csv", header = FALSE)$V1
+V8_CD7barcodes_vector <- as.character(V8_CD7barcodes)
+subset_D7lung <- subset(D7lung, cells = V8_CD7barcodes_vector)
+
+
+D7lungASSAY <- CreateAssayObject(counts = D7lung.data, min.cells = 10, min.features = 200,project = "D7")
+subset_D7lung_asssay <- subset(D7lungASSAY, cells = V8_CD7barcodes_vector)
+
+gene_names <- rownames(subset_D7lung_asssay@counts)
+gene_names <- gsub("GRCh38premrna-", "", gene_names)
+rownames(subset_D7lung_asssay@counts) <- gene_names
+rownames(subset_D7lung_asssay@data) <- gene_names
+subset_D7lung[['RNA']] <- subset_D7lung_asssay
+
+
+metadata <- read.csv("metadata.csv", stringsAsFactors = FALSE,header=TRUE)
+rownames(metadata) <- colnames(subset_D7lung)
+subset_D7lung@meta.data <- metadata
+
+subset_D7lung@meta.data[["disease"]] <- "COVID"
+subset_D7lung@meta.data[["patient"]] <- "Patient 5"
+lung.list <- list(subset_D15lung,subset_D11lung,subset_D14lung,subset_D5lung,subset_D4lung,subset_D7lung)
+lung.list <- lapply(X = lung.list, FUN = SCTransform)
+features <- SelectIntegrationFeatures(object.list = lung.list, nfeatures = 2000)
+lung.list <- PrepSCTIntegration(object.list = lung.list, anchor.features = features)
+lung.anchors <- FindIntegrationAnchors(object.list = lung.list, normalization.method = "SCT", 
+                                          anchor.features = features)
+lung2 <- IntegrateData(anchorset = lung.anchors, normalization.method = "SCT")
+DefaultAssay(lung2) <- "integrated"
+
+# Standard pre-processing workflow
+lung2 <- ScaleData(lung2, features = all.genes)
+lung2 <- RunPCA(lung2, features = VariableFeatures(object = lung2))
+ElbowPlot(lung2)
+lung2 <- FindNeighbors(lung2, dims = 1:17)
+lung2 <- FindClusters(lung2, resolution = 0.5)
+lung2 <- RunUMAP(lung2, dims = 1:17)
+DimPlot(lung2, reduction = "umap")
+saveRDS(lung2,"lung-final.rds")
